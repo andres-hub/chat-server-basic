@@ -12,14 +12,14 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const router = Router();
 
 router.post('/', [
-    check('emial', 'El emial no es valido').isEmail(),
+    check('email', 'El email no es valido').isEmail(),
     check('password', 'El password es obligatorio').not().isEmpty(),
     validarCampos
 ], login);
 
 router.post('/new', [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('emial', 'El emial no es valido').isEmail(),
+    check('email', 'El email no es valido').isEmail(),
     check('password', 'El password es obligatorio').not().isEmpty(),
     validarCampos
 ], crearUsuario);

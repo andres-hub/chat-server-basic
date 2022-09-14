@@ -6,7 +6,7 @@ const UsuarioSchema = Schema({
         type: String,
         require: true
     },
-    emial: { 
+    email: { 
         type: String,
         require: true,
         unique: true

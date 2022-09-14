@@ -6,11 +6,11 @@ const {generarJwt} = require('../helpers/jwt');
 
 const crearUsuario = async (req, res = response) => {
 
-    const {emial, password} = req.body;
+    const {email, password} = req.body;
 
     try {
 
-        const existsEmail = await Usuario.findOne({ emial });
+        const existsEmail = await Usuario.findOne({ email });
         
         if(existsEmail) {
             return res.status(400).json({
@@ -46,13 +46,13 @@ const crearUsuario = async (req, res = response) => {
 
 const login = async (req, res = response) =>{
     
-    const {emial, password} = req.body;
+    const {email, password} = req.body;
 
     try {
 
-        const userDB = await Usuario.findOne({ emial });
+        const usuario = await Usuario.findOne({ email });
 
-        if(!userDB) {
+        if(!usuario) {
             return res.status(400).json({
                 ok: false,
                 msg: "Emial no encontrado"
@@ -60,19 +60,19 @@ const login = async (req, res = response) =>{
         }
         
         // validar password
-        vilidPassword = await bcrypt.compareSync(password, userDB.password);
+        vilidPassword = await bcrypt.compareSync(password, usuario.password);
         if(!vilidPassword){
             return res.status(400).json({
                 ok: false,
                 msg: "La contraseña no es valida"
             });
         }
-
-        const token = await generarJwt(userDB.uid);
+        
+        const token = await generarJwt(usuario.id);
 
         res.json({
             ok: true,
-            userDB,
+            usuario,
             token
         });
 
@@ -89,7 +89,7 @@ const login = async (req, res = response) =>{
 const renewTokn = async (req, res = response) => {
 
     const { uid } = req;
-
+    console.log(uid)
     try {
 
         const token = await generarJwt(uid);
